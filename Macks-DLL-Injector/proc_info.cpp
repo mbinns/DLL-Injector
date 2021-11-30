@@ -8,7 +8,7 @@
 
 DWORD GetPID(const std::wstring& name)
 {
-	std::wcout << L"Searching for: " << name << std::endl;
+	std::wcout << L"[*] Searching for: " << name << std::endl;
 	
 	//Structure for a process entry
 	//https://docs.microsoft.com/en-us/windows/win32/api/tlhelp32/ns-tlhelp32-processentry32
@@ -30,7 +30,7 @@ DWORD GetPID(const std::wstring& name)
 	//Make sure we actually got a snapshot before enumuerating them
 	if (snapshot == INVALID_HANDLE_VALUE)
 	{
-		std::cerr << "Failed to obtain process snapshot" << std::endl;
+		std::cerr << "[!] Failed to obtain process snapshot" << std::endl;
 		return 0;
 	}
 
@@ -41,7 +41,7 @@ DWORD GetPID(const std::wstring& name)
 	//Needs inverse beause 0 = strings match
 	if(!name.compare(proc_info.szExeFile))
 	{
-		std::wcout << L"Found: " << name << std::endl;
+		std::wcout << L"[*] Found: " << name << std::endl;
 		//No danling handles here ;)
 		CloseHandle(snapshot);
 
@@ -55,7 +55,7 @@ DWORD GetPID(const std::wstring& name)
 		{
 			if (!name.compare(proc_info.szExeFile))
 			{
-				std::wcout << L"Found: " << name << std::endl;
+				std::wcout << L"[*] Found: " << name << std::endl;
 				//No danling handles here ;)
 				CloseHandle(snapshot);
 
