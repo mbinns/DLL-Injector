@@ -6,6 +6,17 @@
 #include <iostream>
 #include <string>
 
+/*
+* TTP:
+*	MITRE T1057: https://attack.mitre.org/techniques/T1057
+* Details:
+*	Get a snapshot of only processes on the system, second argument is not needed for processes
+*	https://docs.microsoft.com/en-us/windows/win32/api/tlhelp32/nf-tlhelp32-createtoolhelp32snapshot
+* Detections:
+*	Might Detect CreateToolhelp32Snapshot
+* Improvements:
+*	Homegrown Process listing technique
+*/
 DWORD GetPID(const std::wstring& name)
 {
 	std::wcout << L"[*] Searching for: " << name << std::endl;
@@ -18,13 +29,7 @@ DWORD GetPID(const std::wstring& name)
 	//set this member to sizeof(PROCESSENTRY32). If you do not initialize dwSize, Process32First fails.
 	proc_info.dwSize = sizeof(PROCESSENTRY32);
 	
-	/*
-	* TTP:
-	*	MITRE T1057: https://attack.mitre.org/techniques/T1057
-	* Details:
-	*	Get a snapshot of only processes on the system, second argument is not needed for processes
-	*	https://docs.microsoft.com/en-us/windows/win32/api/tlhelp32/nf-tlhelp32-createtoolhelp32snapshot
-	*/
+	//Get a list of all processes
 	HANDLE snapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
 
 	//Make sure we actually got a snapshot before enumuerating them
